@@ -9,7 +9,7 @@ conda activate my_env
 pip install -r requirements.txt
 ```
 ## Usage
-Datasets: 
+Datasets: https://drive.google.com/file/d/1G7eku6_zdAL2309mTIBn16S-6Q_zTO2F/view?usp=sharing
 
 ```buildoutcfg
 python train.py --data-path PathToDatasets
