@@ -13,7 +13,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = Classifier('last.ckpt', device)
 
 #Path to data
-test_list = glob('datasets_test/val/*/*.mat')
+test_list = glob('/home/cuong/Desktop/ECG/datasets_test/test/*/*.mat')
 test_data =  dataset(test_list)
 test_loader = DataLoader(test_data)
 print(len(test_loader))
@@ -33,7 +33,7 @@ accuracy = metrics.accuracy_score(truth, pred)
 
 df_cm = pd.DataFrame(cm, index = [i for i in "12"],
                   columns = [i for i in "12"])
-plt.figure(figsize = (10,7))
+plt.figure(figsize = (15,12))
 sn.heatmap(df_cm, annot=True)
 plt.title('Accuracy: %.2f %s '%(accuracy*100, '%'))
 plt.xlabel('Prediction')
