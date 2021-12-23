@@ -1,5 +1,5 @@
 # Traning
-Thank for author of https://github.com/onlyzdd/ecg-diagnosis  
+Thank for author of repo: https://github.com/onlyzdd/ecg-diagnosis  
 Model at: models/resnet34_CPSC_all_42.pth   
 Result at: result
 ## Evaluate:
