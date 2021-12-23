@@ -3,48 +3,66 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
+T = 1
+
+class CNN(nn.Module):
+    def __init__(self, input_size = 800, device = 'cpu'):
+        super(CNN, self).__init__()
+        self.device = device
+        self.layer_1 = nn.Sequential(
+            nn.Conv2d(12, 36, kernel_size=(1, 5), padding=0, stride=1),
+            nn.ReLU()
+        )
 
 class RNN(nn.Module):
     def __init__(self, input_size, num_classes, device = 'cpu'):
         super(RNN, self).__init__()
         self.device = device
-        self.hidden_size = 512
+        self.hidden_size = 128
         self.num_layers = 1
         self.lstm = nn.LSTM(input_size, self.hidden_size, self.num_layers, batch_first=True, dropout=0.1)
-        self.fc = nn.Linear(self.hidden_size, 128)
-        self.fc2 = nn.Linear(128, num_classes)
+        self.fc = nn.Linear(self.hidden_size, num_classes)
     def forward(self, x):
         # initial hidden and cell states
         h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
         c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
+        #print(x.size(0))
 
         out, _ = self.lstm(x, (h0, c0))
         out = self.fc(out[:, -1, :])
-        out = self.fc2(out)
+        #out = self.fc2(out)
+        #print(out.shape)
         return out
+class MLP(nn.Module):
+    def __init__(self, input_size, num_classes):
+        super(MLP, self).__init__()
+        self.fc1 = nn.Linear(input_size, 16)
+        self.fc2 = nn.Linear(16, num_classes)
+        self.relu = nn.ReLU()
+    def forward(self, x):
+        y = self.fc1(x)
+        y = self.relu(y)
+        y = self.fc2(y)
+        return y
 
 if __name__ == '__main__':
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    rnn1 = RNN(1000, 128)
+    rnn2 = RNN(1000, 128)
+    rnn3 = RNN(1000, 128)
 
-    net = RNN(4000, 1024, 1, 2)
-    net.load_state_dict(torch.load('model.ckpt'))
-    net.eval()
-    print(net)
-    from scipy import io as io
+    mlp = MLP(128*3, 9)
 
-    mat = io.loadmat('datasets_test/test/1/A0229.mat')
+    x = torch.rand(3,12,1000)
 
-    mat = mat['ECG'][0][0]
+    print(x[:,0:1,:].shape)
 
-    sex = mat[0][0]
-    age = mat[1][0][0]
-    data = mat[2][0]
-    data = data[:4000]
-    x = torch.from_numpy(data)
+    out1 = rnn1(x[:, 0:1, :])
+    out2 = rnn2(x[:, 1:2, :])
+    out3 = rnn3(x[:, 2:3, :])
 
-    x = torch.unsqueeze(x, dim=0)
-    x = torch.unsqueeze(x, dim=0)
-    x = x.to(device)
+    out = torch.cat((out1, out2, out3), dim=1)
+    out = mlp(out)
+    print(out.shape)
 
-    y = net(x.float())
-    print(F.softmax(y))
+
+

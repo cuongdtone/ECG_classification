@@ -1,7 +1,13 @@
-# ECG Classification
-12 Leads ECG classification with LSTM
+# ECGs Classification
+* Automatic identification of the rhythm/morphology abnormalities in 12-lead ECGs
+## Summary 
+* Classification 8 heart diseases and normal based on Deep Learning model
+* ECGs: time serial signal:  
+![](img/vs.png)  
 ## Dev
-```cuong_tran```
+```cuong_tran```  
+- Main language: Python, C++  
+
 ## Install
 ```buildoutcfg
 conda create --name my_env python=3.8
@@ -9,7 +15,7 @@ conda activate my_env
 pip install -r requirements.txt
 ```
 ## Usage
-Datasets: https://drive.google.com/file/d/1G7eku6_zdAL2309mTIBn16S-6Q_zTO2F/view?usp=sharing
+Datasets: 
 
 ```buildoutcfg
 python train.py --data-path PathToDatasets
@@ -18,12 +24,11 @@ python evaluate.py --test-path
 ## Method
 - Use basic LSTM module to classify single-lead 
 - Comming soon: classification with multi-leads
-
 ## Evaluate
 Single lead ECG:  
-Train set:  
-<img src="https://user-images.githubusercontent.com/79197775/141642710-8880c40e-7227-496e-82f0-d49648493985.png" alt="..." width="600" />  
-Val set:  
-<img src="https://user-images.githubusercontent.com/79197775/141642481-39ce0f47-9dab-4959-9519-2f5a4d49d901.png" alt="..." width="600" />  
-Test set:  
+Train set:
+<img src="https://user-images.githubusercontent.com/79197775/141642710-8880c40e-7227-496e-82f0-d49648493985.png" alt="..." width="600" />
+Val set:
+<img src="https://user-images.githubusercontent.com/79197775/141642481-39ce0f47-9dab-4959-9519-2f5a4d49d901.png" alt="..." width="600" />
+Test set:
 <img src="https://user-images.githubusercontent.com/79197775/141642771-866f84e5-4e00-4d19-95be-4a196c31ce7a.png" alt="..." width="600" />
