@@ -1,7 +1,8 @@
 # Traning
 Thank for author of repo: https://github.com/onlyzdd/ecg-diagnosis  
 Model at: models/resnet34_CPSC_all_42.pth   
-Result at: result
+Result at: result  
+Data: https://drive.google.com/drive/folders/1t9ABE-9U3ZgxBoPzK_Pk2gpsF51qkUzq?usp=sharing
 ## Evaluate:
 
 ### Requirements
