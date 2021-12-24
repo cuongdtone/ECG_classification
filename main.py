@@ -8,7 +8,7 @@ from tqdm import tqdm
 import numpy as np
 
 from dataset import ECGDataset
-from resnet import resnet34
+from resnet import resnet34, RNN
 from utils import cal_f1s, cal_aucs, split_data
 
 
@@ -108,7 +108,8 @@ if __name__ == "__main__":
     val_loader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers, pin_memory=True)
     test_dataset = ECGDataset('test', data_dir, label_csv, test_folds, leads)
     test_loader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers, pin_memory=True)
-    net = resnet34(input_channels=nleads).to(device)
+    #net = resnet34(input_channels=nleads).to(device)
+    net = RNN(15000,9)
     optimizer = torch.optim.Adam(net.parameters(), lr=args.lr)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 10, gamma=0.1)
     
