@@ -77,7 +77,24 @@ class ResNet1d(nn.Module):
         x = torch.cat((x1, x2), dim=1)
         x = x.view(x.size(0), -1)
         return self.fc(x)
+class RNN(nn.Module):
+    def __init__(self, input_size, num_classes, device = 'cpu'):
+        super(RNN, self).__init__()
+        self.device = device
+        self.hidden_size = 128
+        self.num_layers = 1
+        self.lstm = nn.LSTM(input_size, self.hidden_size, self.num_layers, batch_first=True, dropout=0.1)
+        self.fc = nn.Linear(self.hidden_size, num_classes)
+    def forward(self, x):
+        # initial hidden and cell states
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
+        c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
 
+        out, _ = self.lstm(x, (h0, c0))
+        out = self.fc(out[:, -1, :])
+        #out = self.fc2(out)
+        #print(out.shape)
+        return out
 
 def resnet18(**kwargs):
     model = ResNet1d(BasicBlock1d, [2, 2, 2, 2], **kwargs)
@@ -87,3 +104,8 @@ def resnet18(**kwargs):
 def resnet34(**kwargs):
     model = ResNet1d(BasicBlock1d, [3, 4, 6, 3], **kwargs)
     return model
+if __name__ == '__main__':
+    net = resnet18()
+    x = torch.rand(3, 12, 1000)
+    out = net(x)
+    print(out)
